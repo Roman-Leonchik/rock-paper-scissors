@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "BarlowSemiCondensed";
+    src: url("./Regular/BarlowSemiCondensed-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "BarlowSemiCondensed";
+    src: url("./Bold/BarlowSemiCondensed-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "BarlowSemiCondensed";
+    src: url("./ExtraBold/BarlowSemiCondensed-ExtraBold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 700;
+}
