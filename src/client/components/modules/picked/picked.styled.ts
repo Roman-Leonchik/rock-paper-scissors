@@ -68,7 +68,9 @@ export const StyledResultContainer = styled.div<IProps>`
     pointer-events: ${({isVisible}) => isVisible ? "auto" : "none"};
     white-space: pre;
     grid-area: result;
-    margin: 0 auto;
+    @media ${Device.tabletM} {
+        margin: 0 auto;
+    }
 `;
 
 export const StyledResultText = styled.p`

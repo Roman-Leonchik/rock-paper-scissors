@@ -26,6 +26,7 @@ export const StyledModalContent = styled.div`
     top: 50%;
     left: 50%;
     max-width: 400px;
+    max-height: calc(100vh - 60px);
     width: calc(100vw - 40px);
     transform: translate(-50%, -50%);
     background-color: ${({theme}) => theme.white};
@@ -75,4 +76,9 @@ export const StyledModalCancel = styled.button`
     &:hover {
         transform: rotate(135deg);
     }
+`;
+
+export const StyledContent = styled.div`
+    overflow: auto;
+    max-height: calc(100vh - 155px);
 `;

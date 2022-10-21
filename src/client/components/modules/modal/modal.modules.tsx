@@ -5,6 +5,7 @@ import {
     StyledModalContent,
     StyledModalHeader,
     StyledModalCancel,
+    StyledContent,
 } from "./modal.styled";
 
 interface IProps {
@@ -23,7 +24,9 @@ export const Modal: React.FC<IProps> = ({ isVisible, onCancel, header, content }
                     {header ?  header : "Rules"}
                     <StyledModalCancel onClick={onCancel}/>
                 </StyledModalHeader>
-                {content}
+                <StyledContent>
+                    {content}
+                </StyledContent>
             </StyledModalContent>
         </StyledModal>
     )

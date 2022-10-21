@@ -24,7 +24,7 @@ export const Picked: React.FC<IProps> = ({ type, picked, result, onResult, onSco
 
     useEffect(() => {
         if(counter > 0) {
-            setTimeout(() => {setCounter(counter-1)}, 1000)
+            setTimeout(() => {setCounter(counter-1)}, 500)
         } else {
             onScore(result);
         }

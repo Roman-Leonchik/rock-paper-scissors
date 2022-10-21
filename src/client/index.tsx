@@ -5,6 +5,7 @@ import { choiceTypes, resultTypes } from "./lib/types";
 import { Picked } from "./components/modules/picked/picked.modules";
 import { Modal } from "./components/modules/modal/modal.modules";
 import { ButtonCircle } from "./components/elements/button-circle/button-circle.elements";
+import { HistoryItem, IHistory } from "./components/elements/history-item/history-item.elements";
 import {
     StyledPage,
     StyledContainer,
@@ -15,8 +16,10 @@ import {
     StyledScoreNumber,
     StyledButtonChoice,
     StyledLogo,
-    StyledRulesButton,
+    StyledButtonItem,
     StyledRulesImage,
+    StyledButtonWrapp,
+    StyledHistoryList,
 } from "./styled";
 
 export const App = () => {
@@ -33,7 +36,11 @@ export const App = () => {
         history: false,
     });
     const [choice, setChoice] = useState<boolean>(true);
-    const [result, setResult] = useState<resultTypes>(resultTypes.EMPTY);
+    const [result, setResult] = useState({
+        type: resultTypes.EMPTY,
+        round: 0,
+    });
+    const [history, setHistory] = useState<IHistory[]>([]);
 
     const randomNum = (
         min:number,
@@ -77,18 +84,45 @@ export const App = () => {
             const c = a % b
             return (c < 0) ? c + b : c
         }
+
+        if(picked.user === choiceTypes.EMPTY || picked.bot === choiceTypes.EMPTY) return
+        setResult((prev) => ({
+            ...prev,
+            round: ++prev.round,
+        }));
         switch(true) {
             case (x === y): {
-                setResult(resultTypes.DRAW);
+                setResult((prev) => ({
+                    ...prev,
+                    type: resultTypes.DRAW,
+                }));
                 break;
             };
             case((mod((x - y), choiceList.length) < choiceList.length / 2)): {
-                setResult(resultTypes.WINS);
+                setResult((prev) => ({
+                    ...prev,
+                    type: resultTypes.WINS,
+                }));
                 break;
             }
-            default: setResult(resultTypes.LOSE);
+            default: setResult((prev) => ({
+                ...prev,
+                type: resultTypes.LOSE,
+            }));
         }
     }, [picked]);
+
+    useEffect(() => {
+        if (result.type === resultTypes.EMPTY) return
+        console.log(result.type)
+        const historyItem: IHistory = {
+            result: result.type,
+            user: picked.user,
+            bot: picked.bot,
+            index: result.round,
+        }
+        setHistory((prev) => [...prev, historyItem]);
+    }, [result]);
 
     return (
         <CompositeProvider>
@@ -111,25 +145,35 @@ export const App = () => {
                         choice
                             ?
                                 <StyledButtonChoice>
-                                    {choiceList.map((item) => <ButtonCircle onClick={hadlerClickButton} type={item}/>)}
+                                    {choiceList.map((item) => <ButtonCircle onClick={hadlerClickButton} type={item} key={item}/>)}
                                 </StyledButtonChoice>
                             :
                                 <Picked
                                     type={picked.user}
                                     picked={picked.bot}
-                                    result={result}
+                                    result={result.type}
                                     onResult={hadlerClickResult}
                                     onScore={hadlerChoice}
                                 />
                     }
-                    <StyledRulesButton 
-                        onClick={() => setIsModal((prev) => ({
-                            ...prev,
-                            rules: !prev.rules,
-                        }))
-                    }>
-                        Rules
-                    </StyledRulesButton>
+                    <StyledButtonWrapp>
+                        <StyledButtonItem
+                            onClick={() => setIsModal((prev) => ({
+                                ...prev,
+                                history: !prev.history,
+                            }))
+                        }>
+                            History
+                        </StyledButtonItem>
+                        <StyledButtonItem 
+                            onClick={() => setIsModal((prev) => ({
+                                ...prev,
+                                rules: !prev.rules,
+                            }))
+                        }>
+                            Rules
+                        </StyledButtonItem>
+                    </StyledButtonWrapp>
                 </StyledContainer>
 
                 <Modal
@@ -145,6 +189,27 @@ export const App = () => {
                                 alt="rules"
                             />
                         </>
+                    }
+                />
+                <Modal
+                    isVisible={isModal.history}
+                    onCancel={() => setIsModal((prev) => ({
+                        ...prev,
+                        history: !prev.history,
+                    }))}
+                    header="History"
+                    content={
+                        <StyledHistoryList>
+                            {history.map((item) => (
+                                <HistoryItem
+                                    key={`${item.user}-${item.bot}-${item.index}`}
+                                    result={item.result}
+                                    user={item.user}
+                                    bot={item.bot}
+                                    index={item.index}
+                                />
+                            ))}
+                        </StyledHistoryList>
                     }
                 />
             </StyledPage>

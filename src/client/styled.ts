@@ -102,16 +102,26 @@ export const StyledButtonChoice = styled.div`
     }
 `;
 
-export const StyledRulesButton = styled.button`
+export const StyledButtonWrapp = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    left: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    @media ${Device.tablet} {
+        justify-content: center;
+    }
+`;
+
+export const StyledButtonItem = styled.button`
     border-radius: 10px;
     border: 1px solid ${({theme}) => theme.white};
     color: ${({theme}) => theme.white};
     cursor: pointer;
     background-color: rgba(255,255,255,0);
     padding: 5px;
-    position: absolute;
-    bottom: 0;
-    right: 15px;
     text-transform: uppercase;
     height: 40px;
     min-width: 120px;
@@ -122,15 +132,10 @@ export const StyledRulesButton = styled.button`
     letter-spacing: 2px;
     transition: 0.3s;
     font-weight: 600;
+    max-width: 200px;
     &:hover {
         color: ${({theme}) => theme.darkText};
         background-color: ${({theme}) => theme.white};
-    }
-    @media ${Device.tablet} {
-        right: 15px;
-        left: 15px;
-        margin: 0 auto;
-        max-width: 200px;
     }
 `;
 
@@ -138,4 +143,10 @@ export const StyledRulesImage = styled.img`
     margin: 0 auto;
     display: block;
     max-width: 100%;
+`;
+
+export const StyledHistoryList = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 `;
